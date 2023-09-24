@@ -14,25 +14,27 @@ import org.scalatest.wordspec.AnyWordSpec
 
 class WorkoutSpec extends AnyWordSpec with Matchers {
   "The Workout" should {
-    "have example test that can be removed" in {
-      val testKit = WorkoutTestKit(new Workout(_))
-      pending
-      // use the testkit to execute a command:
-      // val result: EventSourcedResult[R] = testKit.someOperation(SomeRequest("id"));
-      // verify the emitted events
-      // val actualEvent: ExpectedEvent = result.nextEventOfType[ExpectedEvent]
-      // actualEvent shouldBe expectedEvent
-      // verify the final state after applying the events
-      // testKit.state() shouldBe expectedState
-      // verify the reply
-      // result.reply shouldBe expectedReply
-      // verify the final state after the command
-    }
-
     "correctly process commands of type Create" in {
       val testKit = WorkoutTestKit(new Workout(_))
-      pending
-      // val result: EventSourcedResult[Empty] = testKit.create(workout.CreateWorkoutCommand(...))
+
+      val createCommand = workout.CreateWorkoutCommand(workoutId = "workoutId", username = "username")
+      val creationResult = testKit.create(createCommand)
+
+      val actualEvent = creationResult.nextEvent[WorkoutCreated]
+      val expectedEvent = WorkoutCreated(id = "workoutId", username = "username")
+
+      val expectedState = WorkoutState(id = "workoutId", username = "username", sets = Seq.empty)
+
+      creationResult.events should have size 1
+      testKit.allEvents should have size 1
+
+      actualEvent.id shouldBe expectedEvent.id
+      actualEvent.username shouldBe expectedEvent.username
+
+      testKit.currentState.id shouldBe expectedState.id
+      testKit.currentState.username shouldBe expectedState.username
+
+      creationResult.reply shouldBe Empty.defaultInstance
     }
 
     "correctly process commands of type AddSet" in {
