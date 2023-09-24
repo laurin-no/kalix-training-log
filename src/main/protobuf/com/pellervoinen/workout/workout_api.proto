@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package com.pellervoinen.workout;
+
+import "google/protobuf/empty.proto";
+import "kalix/annotations.proto";
+import "google/api/annotations.proto";
+
+
+// Commands
+
+message CreateWorkoutCommand {
+  string workout_id = 1 [(kalix.field).entity_key = true];
+  string username = 2;
+}
+
+message AddSetCommand {
+  string workout_id = 1 [(kalix.field).entity_key = true];
+  string exercise_name = 2;
+  int32 reps = 3;
+  int32 weight = 4;
+}
+
+message RemoveSetCommand {
+  string workout_id = 1 [(kalix.field).entity_key = true];
+  string set_id = 2;
+}
+
+message GetWorkoutCommand {
+  string workout_id = 1 [(kalix.field).entity_key = true];
+}
+
+message FinishWorkoutCommand {
+  string workout_id = 1 [(kalix.field).entity_key = true];
+  int32 exhaustion_rating = 2;
+}
+
+service WorkoutService {
+  option (kalix.codegen) = {
+    event_sourced_entity: {
+      name: "com.pellervoinen.workout.domain.Workout"
+      entity_type: "workout"
+      state: "com.pellervoinen.workout.domain.WorkoutState"
+      events: [
+        "com.pellervoinen.workout.domain.WorkoutFinished",
+        "com.pellervoinen.workout.domain.SetAdded",
+        "com.pellervoinen.workout.domain.SetRemoved",
+        "com.pellervoinen.workout.domain.WorkoutCreated"
+      ]
+    }
+  };
+
+  rpc Create(CreateWorkoutCommand) returns (google.protobuf.Empty){
+    option (kalix.method).entity.key_generator = VERSION_4_UUID;
+  }
+
+  rpc AddSet(AddSetCommand) returns (google.protobuf.Empty){
+  }
+
+  rpc RemoveSet(RemoveSetCommand) returns (google.protobuf.Empty){
+  }
+
+  rpc GetWorkout(GetWorkoutCommand) returns (Workout){
+  }
+
+  rpc FinishWorkout(FinishWorkoutCommand) returns (google.protobuf.Empty){
+  }
+
+}
+
+// Views
+
+message SetItem {
+  string set_id = 1;
+  string exercise_name = 2;
+  int32 reps = 3;
+  int32 weight = 4;
+  int64 timestamp = 5;
+}
+
+message Workout {
+  string workout_id = 1 [(kalix.field).entity_key = true];
+  repeated SetItem sets = 2;
+  int64 start_time = 3;
+  int64 end_time = 4;
+  string username = 5;
+  int32 exhaustion_rating = 6;
+}
+
+

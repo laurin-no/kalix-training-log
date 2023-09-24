@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package com.pellervoinen.workout.domain;
+
+message Set {
+  string id = 1;
+  string exercise_name = 2;
+  int32 reps = 3;
+  int32 weight = 4;
+  int64 timestamp = 5;
+}
+
+message WorkoutState {
+  string id = 1;
+  repeated Set sets = 2;
+  int64 start_time = 3;
+  int64 end_time = 4;
+  string username = 5;
+  int32 exhaustion_rating = 6;
+}
+
+// Events
+message WorkoutFinished {
+  string id = 1;
+  repeated Set sets = 2;
+  int64 start_time = 3;
+  int64 end_time = 4;
+  string username = 5;
+  int32 exhaustion_rating = 6;
+}
+
+message SetAdded {
+  string id = 1;
+  Set set = 2;
+}
+
+message SetRemoved {
+  string id = 1;
+}
+
+message WorkoutCreated {
+  string id = 1;
+  int64 start_time = 2;
+  string username = 3;
+}

@@ -1,6 +1,6 @@
-package com.pellervoinen
+package com.pellervoinen.workout
 
-import com.pellervoinen.domain.Counter
+import com.pellervoinen.workout.domain.Workout
 import kalix.scalasdk.Kalix
 import org.slf4j.LoggerFactory
 
@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory
 
 object Main {
 
-  private val log = LoggerFactory.getLogger("com.pellervoinen.Main")
+  private val log = LoggerFactory.getLogger("com.pellervoinen.workout.Main")
 
   def createKalix(): Kalix = {
     // The KalixFactory automatically registers any generated Actions, Views or Entities,
@@ -19,7 +19,7 @@ object Main {
     // If you prefer, you may remove this and manually register these components in a
     // `Kalix()` instance.
     KalixFactory.withComponents(
-      new Counter(_))
+      new Workout(_))
   }
 
   def main(args: Array[String]): Unit = {
