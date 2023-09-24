@@ -84,17 +84,21 @@ class Workout(context: EventSourcedEntityContext) extends AbstractWorkout {
 
   // Event Handlers
 
-  override def workoutFinished(currentState: WorkoutState, workoutFinished: WorkoutFinished): WorkoutState =
-    throw new RuntimeException("The event handler for `WorkoutFinished` is not implemented, yet")
+  override def workoutFinished(currentState: WorkoutState, workoutFinished: WorkoutFinished): WorkoutState = {
+    currentState.copy(endTime = workoutFinished.endTime, exhaustionRating = workoutFinished.exhaustionRating)
+  }
 
-  override def setAdded(currentState: WorkoutState, setAdded: SetAdded): WorkoutState =
-    throw new RuntimeException("The event handler for `SetAdded` is not implemented, yet")
+  override def setAdded(currentState: WorkoutState, setAdded: SetAdded): WorkoutState = {
+    currentState.copy(sets = currentState.sets ++ setAdded.set.toSeq)
+  }
 
-  override def setRemoved(currentState: WorkoutState, setRemoved: SetRemoved): WorkoutState =
-    throw new RuntimeException("The event handler for `SetRemoved` is not implemented, yet")
+  override def setRemoved(currentState: WorkoutState, setRemoved: SetRemoved): WorkoutState = {
+    currentState.copy(sets = currentState.sets.filterNot(_.id == setRemoved.id))
+  }
 
-  override def workoutCreated(currentState: WorkoutState, workoutCreated: WorkoutCreated): WorkoutState =
-    throw new RuntimeException("The event handler for `WorkoutCreated` is not implemented, yet")
+  override def workoutCreated(currentState: WorkoutState, workoutCreated: WorkoutCreated): WorkoutState = {
+    currentState.copy(id = workoutCreated.id, startTime = workoutCreated.startTime, username = workoutCreated.username)
+  }
 
   // Error Handling
   private type Error = String
