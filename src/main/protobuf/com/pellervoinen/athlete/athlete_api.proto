@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package com.pellervoinen.athlete;
+
+import "google/protobuf/empty.proto";
+import "kalix/annotations.proto";
+import "google/api/annotations.proto";
+
+// Commands
+message CreateAthleteCommand {
+  string username = 1 [(kalix.field).entity_key = true];
+  int32 birth_year = 2;
+}
+
+message GetAthleteCommand {
+  string username = 1 [(kalix.field).entity_key = true];
+}
+
+service AthleteService {
+  option (kalix.codegen) = {
+    value_entity: {
+      name: "com.pellervoinen.athlete.domain.Athlete"
+      entity_type: "athlete"
+      state: "com.pellervoinen.athlete.domain.AthleteState"
+    }
+  };
+
+  rpc CreateAthlete(CreateAthleteCommand) returns (google.protobuf.Empty){
+  }
+
+  rpc GetAthlete(GetAthleteCommand) returns (Athlete) {
+  }
+}
+
+// Views
+
+message Athlete {
+  string username = 1;
+  int32 birth_year = 2;
+  int32 fatigue_score = 3;
+  int32 fitness_score = 4;
+  int32 readiness_score = 5;
+}

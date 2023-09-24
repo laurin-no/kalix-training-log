@@ -1,4 +1,4 @@
-package com.pellervoinen.workout
+package com.pellervoinen.athlete
 
 import akka.actor.ActorSystem
 import com.google.protobuf.empty.Empty
@@ -17,7 +17,7 @@ import org.scalatest.wordspec.AnyWordSpec
 // As long as this file exists it will not be overwritten: you can maintain it yourself,
 // or delete it so it is regenerated as needed.
 
-class WorkoutServiceIntegrationSpec
+class AthleteServiceIntegrationSpec
     extends AnyWordSpec
     with Matchers
     with BeforeAndAfterAll
@@ -28,9 +28,9 @@ class WorkoutServiceIntegrationSpec
 
   private val testKit = KalixTestKit(Main.createKalix()).start()
 
-  private val client = testKit.getGrpcClient(classOf[WorkoutService])
+  private val client = testKit.getGrpcClient(classOf[AthleteService])
 
-  "WorkoutService" must {
+  "AthleteService" must {
 
     "have example test that can be removed" in {
       pending

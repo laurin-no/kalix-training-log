@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package com.pellervoinen.athlete.domain;
+
+message AthleteState {
+  string username = 1;
+  int32 birth_year = 2;
+  int32 fatigue_score = 3;
+  int32 fitness_score = 4;
+  int32 readiness_score = 5;
+}
