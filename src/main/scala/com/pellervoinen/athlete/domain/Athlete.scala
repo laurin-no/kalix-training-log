@@ -2,7 +2,7 @@ package com.pellervoinen.athlete.domain
 
 import com.google.protobuf.empty.Empty
 import com.pellervoinen.athlete
-import com.pellervoinen.athlete.CalculateTrainingImpactCommand
+import com.pellervoinen.athlete.{ CalculateTrainingImpactCommand, Workout }
 import kalix.scalasdk.valueentity.ValueEntity
 import kalix.scalasdk.valueentity.ValueEntityContext
 
@@ -42,7 +42,10 @@ class Athlete(context: ValueEntityContext) extends AbstractAthlete {
   override def calculateTrainingImpact(
       currentState: AthleteState,
       calculateTrainingImpactCommand: CalculateTrainingImpactCommand): ValueEntity.Effect[Empty] = {
-    ???
+
+    currentState.toNonEmptyState
+      .map(_.calculateTrainingImpact(calculateTrainingImpactCommand.workouts))
+      .updateState(Empty.defaultInstance)
   }
 
   // Error Handling
@@ -55,6 +58,14 @@ class Athlete(context: ValueEntityContext) extends AbstractAthlete {
 
     def toNonEmptyState: Either[Error, AthleteState] = {
       Either.cond(state != AthleteState.defaultInstance, state, "The state must not be empty")
+    }
+
+    def calculateTrainingImpact(workouts: Seq[Workout]): AthleteState = {
+      val fatigue = workouts.map(_.exhaustionRating).sum
+      val fitness = workouts.map(_.sets.map(i => i.reps * i.weight).sum).sum
+      val readiness = fitness - fatigue
+
+      state.copy(fatigueScore = fatigue, fitnessScore = fitness, readinessScore = readiness)
     }
   }
 
