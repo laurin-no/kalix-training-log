@@ -2,6 +2,7 @@ package com.pellervoinen.athlete.domain
 
 import com.google.protobuf.empty.Empty
 import com.pellervoinen.athlete
+import com.pellervoinen.athlete.CalculateTrainingImpactCommand
 import kalix.scalasdk.valueentity.ValueEntity
 import kalix.scalasdk.valueentity.ValueEntityContext
 
@@ -36,6 +37,12 @@ class Athlete(context: ValueEntityContext) extends AbstractAthlete {
       .map(state =>
         athlete.Athlete(state.username, state.birthYear, state.fatigueScore, state.fitnessScore, state.readinessScore))
       .fold(error => effects.error(error), effects.reply(_))
+  }
+
+  override def calculateTrainingImpact(
+      currentState: AthleteState,
+      calculateTrainingImpactCommand: CalculateTrainingImpactCommand): ValueEntity.Effect[Empty] = {
+    ???
   }
 
   // Error Handling

@@ -16,6 +16,11 @@ message GetAthleteCommand {
   string username = 1 [(kalix.field).entity_key = true];
 }
 
+message CalculateTrainingImpactCommand {
+  string username = 1 [(kalix.field).entity_key = true];
+  repeated Workout workouts = 2;
+}
+
 service AthleteService {
   option (kalix.codegen) = {
     value_entity: {
@@ -30,6 +35,9 @@ service AthleteService {
 
   rpc GetAthlete(GetAthleteCommand) returns (Athlete) {
   }
+
+  rpc CalculateTrainingImpact(CalculateTrainingImpactCommand) returns (google.protobuf.Empty) {
+  }
 }
 
 // Views
@@ -40,4 +48,21 @@ message Athlete {
   int32 fatigue_score = 3;
   int32 fitness_score = 4;
   int32 readiness_score = 5;
+}
+
+message SetItem {
+  string set_id = 1;
+  string exercise_name = 2;
+  int32 reps = 3;
+  int32 weight = 4;
+  int64 timestamp = 5;
+}
+
+message Workout {
+  string workout_id = 1 [(kalix.field).entity_key = true];
+  repeated SetItem sets = 2;
+  int64 start_time = 3;
+  int64 end_time = 4;
+  string username = 5;
+  int32 exhaustion_rating = 6;
 }

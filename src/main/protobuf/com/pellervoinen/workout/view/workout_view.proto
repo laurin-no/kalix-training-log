@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package com.pellervoinen.workout.view;
+
+import "com/pellervoinen/workout/domain/workout_domain.proto";
+import "com/pellervoinen/workout/workout_api.proto";
+import "kalix/annotations.proto";
+import "google/protobuf/any.proto";
+
+message ByNameRequest {
+  string username = 1;
+}
+
+service FinishedWorkoutByAthlete {
+  option (kalix.codegen) = {
+    view: {}
+  };
+
+  rpc ProcessWorkoutFinished(domain.WorkoutFinished) returns (Workout) {
+    option (kalix.method).eventing.in = {
+      event_sourced_entity: "workouts"
+    };
+    option (kalix.method).view.update = {
+      table: "workouts"
+    };
+  }
+
+  rpc IgnoreOtherEvents(google.protobuf.Any) returns (Workout) {
+    option (kalix.method).eventing.in = {
+      event_sourced_entity: "workouts"
+      ignore: true
+    };
+  }
+
+  rpc GetWorkouts(ByNameRequest) returns (stream Workout) {
+    option (kalix.method).view.query = {
+      query: "SELECT * FROM workouts WHERE username = :username AND end_time > 0"
+    };
+  }
+}

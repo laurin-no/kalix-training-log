@@ -1,8 +1,10 @@
 package com.pellervoinen
 
+import com.pellervoinen.athlete.actions.WorkoutEventSubscriptionAction
 import com.pellervoinen.athlete.domain.Athlete
 import com.pellervoinen.athlete.domain.AthletesListingView
 import com.pellervoinen.workout.domain.Workout
+import com.pellervoinen.workout.view.FinishedWorkoutByAthleteView
 import kalix.scalasdk.Kalix
 import org.slf4j.LoggerFactory
 
@@ -20,7 +22,12 @@ object Main {
     // and is kept up-to-date with any changes in your protobuf definitions.
     // If you prefer, you may remove this and manually register these components in a
     // `Kalix()` instance.
-    KalixFactory.withComponents(new Athlete(_), new Workout(_), new AthletesListingView(_))
+    KalixFactory.withComponents(
+      new Athlete(_),
+      new Workout(_),
+      new AthletesListingView(_),
+      new FinishedWorkoutByAthleteView(_),
+      new WorkoutEventSubscriptionAction(_))
   }
 
   def main(args: Array[String]): Unit = {
