@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package com.pellervoinen.athlete.domain;
+
+import "com/pellervoinen/athlete/domain/athlete_domain.proto";
+import "kalix/annotations.proto";
+import "google/protobuf/empty.proto";
+
+message GetAthleteRequest {
+}
+
+service AthletesListing {
+  option (kalix.codegen) = {
+    view: {}
+  };
+
+  rpc UpdateAthlete(domain.AthleteState) returns (domain.AthleteState) {
+    option (kalix.method).eventing.in = {
+      value_entity: "athletes"
+    };
+    option (kalix.method).view.update = {
+      table: "athletes"
+    };
+  }
+
+  rpc GetAthletes(GetAthleteRequest) returns (stream domain.AthleteState) {
+    option (kalix.method).view.query = {
+      query: "SELECT * FROM athletes"
+    };
+  }
+}
