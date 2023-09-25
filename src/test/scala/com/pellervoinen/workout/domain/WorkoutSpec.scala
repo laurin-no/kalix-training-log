@@ -36,29 +36,5 @@ class WorkoutSpec extends AnyWordSpec with Matchers {
 
       creationResult.reply shouldBe Empty.defaultInstance
     }
-
-    "correctly process commands of type AddSet" in {
-      val testKit = WorkoutTestKit(new Workout(_))
-      pending
-      // val result: EventSourcedResult[Empty] = testKit.addSet(workout.AddSetCommand(...))
-    }
-
-    "correctly process commands of type RemoveSet" in {
-      val testKit = WorkoutTestKit(new Workout(_))
-      pending
-      // val result: EventSourcedResult[Empty] = testKit.removeSet(workout.RemoveSetCommand(...))
-    }
-
-    "correctly process commands of type GetWorkout" in {
-      val testKit = WorkoutTestKit(new Workout(_))
-      pending
-      // val result: EventSourcedResult[workout.Workout] = testKit.getWorkout(workout.GetWorkoutCommand(...))
-    }
-
-    "correctly process commands of type FinishWorkout" in {
-      val testKit = WorkoutTestKit(new Workout(_))
-      pending
-      // val result: EventSourcedResult[Empty] = testKit.finishWorkout(workout.FinishWorkoutCommand(...))
-    }
   }
 }
