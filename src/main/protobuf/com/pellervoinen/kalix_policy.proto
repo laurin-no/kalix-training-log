@@ -10,5 +10,5 @@ import "kalix/annotations.proto";
 // per component or method using annotations.
 // Documentation at https://docs.kalix.io/services/using-acls.html
 option (kalix.file).acl = {
-  allow: { service: "*" }
+  allow: {principal: ALL}
 };

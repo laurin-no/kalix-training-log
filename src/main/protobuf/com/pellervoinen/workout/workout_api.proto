@@ -10,7 +10,8 @@ import "google/api/annotations.proto";
 // Commands
 
 message CreateWorkoutCommand {
-  string username = 1;
+  string workout_id = 1 [(kalix.field).entity_key = true];
+  string username = 2;
 }
 
 message AddSetCommand {
@@ -50,7 +51,6 @@ service WorkoutService {
   };
 
   rpc Create(CreateWorkoutCommand) returns (google.protobuf.Empty){
-    option (kalix.method).entity.key_generator = VERSION_4_UUID;
   }
 
   rpc AddSet(AddSetCommand) returns (google.protobuf.Empty){

@@ -11,6 +11,10 @@ message ByNameRequest {
   string username = 1;
 }
 
+message WorkoutsResponse {
+  repeated Workout workouts = 1;
+}
+
 service FinishedWorkoutByAthlete {
   option (kalix.codegen) = {
     view: {}
@@ -32,9 +36,9 @@ service FinishedWorkoutByAthlete {
     };
   }
 
-  rpc GetWorkouts(ByNameRequest) returns (stream Workout) {
+  rpc GetWorkouts(ByNameRequest) returns (WorkoutsResponse) {
     option (kalix.method).view.query = {
-      query: "SELECT * FROM workouts WHERE username = :username AND end_time > 0"
+      query: "SELECT * AS workouts FROM workouts WHERE username = :username AND end_time > 0"
     };
   }
 }

@@ -24,7 +24,7 @@ class Workout(context: EventSourcedEntityContext) extends AbstractWorkout {
       currentState: WorkoutState,
       createWorkoutCommand: workout.CreateWorkoutCommand): EventSourcedEntity.Effect[Empty] = {
     val event = WorkoutCreated(
-      id = context.entityId,
+      id = createWorkoutCommand.workoutId,
       startTime = Instant.now().getEpochSecond,
       username = createWorkoutCommand.username)
 

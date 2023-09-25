@@ -5,6 +5,7 @@ package com.pellervoinen.athlete.actions;
 import "kalix/annotations.proto";
 import "com/pellervoinen/workout/domain/workout_domain.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/any.proto";
 
 service WorkoutEventSubscription {
   option (kalix.codegen) = {
@@ -14,6 +15,13 @@ service WorkoutEventSubscription {
   rpc OnWorkoutFinished(com.pellervoinen.workout.domain.WorkoutFinished) returns (google.protobuf.Empty) {
     option (kalix.method).eventing.in = {
       event_sourced_entity: "workout"
+    };
+  }
+
+  rpc IgnoreOtherEvents(google.protobuf.Any) returns (google.protobuf.Empty) {
+    option (kalix.method).eventing.in = {
+      event_sourced_entity: "workout"
+      ignore: true
     };
   }
 }
