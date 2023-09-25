@@ -18,7 +18,7 @@ service FinishedWorkoutByAthlete {
 
   rpc ProcessWorkoutFinished(domain.WorkoutFinished) returns (Workout) {
     option (kalix.method).eventing.in = {
-      event_sourced_entity: "workouts"
+      event_sourced_entity: "workout"
     };
     option (kalix.method).view.update = {
       table: "workouts"
@@ -27,7 +27,7 @@ service FinishedWorkoutByAthlete {
 
   rpc IgnoreOtherEvents(google.protobuf.Any) returns (Workout) {
     option (kalix.method).eventing.in = {
-      event_sourced_entity: "workouts"
+      event_sourced_entity: "workout"
       ignore: true
     };
   }

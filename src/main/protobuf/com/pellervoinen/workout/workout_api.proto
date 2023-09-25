@@ -10,8 +10,7 @@ import "google/api/annotations.proto";
 // Commands
 
 message CreateWorkoutCommand {
-  string workout_id = 1 [(kalix.field).entity_key = true];
-  string username = 2;
+  string username = 1;
 }
 
 message AddSetCommand {

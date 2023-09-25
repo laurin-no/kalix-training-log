@@ -16,7 +16,7 @@ service AthletesListing {
 
   rpc UpdateAthlete(domain.AthleteState) returns (domain.AthleteState) {
     option (kalix.method).eventing.in = {
-      value_entity: "athletes"
+      value_entity: "athlete"
     };
     option (kalix.method).view.update = {
       table: "athletes"
